@@ -1,0 +1,105 @@
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'shop/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/css/style.css' %}">
+    <title>{{ title }}</title>
+</head>
+
+<body>
+
+<section class="top-bar">
+  <div class="container">
+    {% include 'shop/top_navbar.html' %}
+  </div>
+</section>
+
+<section class="container mt-5">
+    {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show d-flex justify-content-center" role="alert">
+                  <strong>{{ message }}</strong>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+            {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-12">
+            {% if cart %}
+            <div class="shopping__cart d-flex  justify-content-center p-1 mb-1">
+                <h3>Shopping Cart</h3>
+            </div>
+            <div class="link__back__home">
+                <a class="d-flex justify-content-center align-items-center mb-2 p-1 nav-link" href="{% url 'home' %}">
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                    <span class="p-1">Back home</span>
+                </a>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col"><span>Photo</span></th>
+                  <th scope="col"><span>Title</span></th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total Price</th>
+                  <th scope="col">Action</th>
+                </tr>
+                </thead>
+                    {% for item in cart.products.all %}
+                    <tbody>
+                      <tr>
+                        <td class="w-25">
+                            <img width="50%" class="img-fluid" src="{{ item.content_object.photo.url }}" alt="{{ item.product.title }}">
+                        </td>
+                          <td>{{ item.content_object.title }}</td>
+                          <td>{{ item.content_object.price }}<span>$</span></td>
+                          <td>
+                              <form action="{% url 'change_qty' item.content_object.slug %}" method="post">
+                                  {% csrf_token %}
+                                  <input type="number" class="form-control" style="width: 70px;" min="1" name="qty" value="{{ item.quality }}">
+                                  <br>
+                                  <input type="submit" class="btn btn-primary" value="Save">
+                              </form>
+                          </td>
+                          <td>{{ item.final_price }}<span>$</span></td>
+                          <td>
+                              <a href="{% url 'remove_cart' item.content_object.slug %}">
+                                  <button class="btn btn-danger">Delete</button>
+                              </a>
+                          </td>
+                       </tr>
+                    </tbody>
+                    {% endfor %}
+                <tbody class="">
+                    <tr>
+                       <td colspan="2"></td>
+                       <td>Итого:</td>
+                       <td>{{ cart.total_products }}</td>
+                       <td><strong>{{ cart.final_price }}$</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty__cart d-flex justify-content-center p-2 mt-5">
+                <div class="message__empty">
+                    <h2 class="font-weight-normal">You don't have any products in your cart</h2>
+                    <a class="d-flex justify-content-center align-items-center mt-2 p-2 nav-link" href="{% url 'home' %}">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                        <span class="p-1">Back home</span>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>

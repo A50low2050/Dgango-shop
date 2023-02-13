@@ -1,0 +1,59 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'shop/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/css/style.css' %}">
+    <title>{{ product.title }}</title>
+</head>
+<body>
+
+<section class="top-bar">
+  <div class="container">
+    {% include 'shop/top_navbar.html' %}
+  </div>
+</section>
+
+<section class="container shop__products">
+    <div class="category__product mt-5 w-25 d-flex justify-content-center">
+        <span>{{ product.category }}</span>
+    </div>
+    <div class="row border">
+        <div class="col-5">
+            <div class="card__title d-flex justify-content-center mt-5">
+                <span>{{ product.title }}</span>
+            </div>
+            <div class="wrapper__image__product mt-2">
+                <img class="card-img-top" src="{{ product.photo.url }}" alt="Card image cap">
+            </div>
+
+             <div class="wrapper__price__product d-flex justify-content-center mt-2">
+                <p class="card__text">{{ product.price }}<span>$</span></p>
+             </div>
+        </div>
+        <div class="col-7">
+            <div class="card__body mt-2">
+                <span class="d-flex justify-content-center font-italic">Description</span>
+                <p class="card__text"> {{ product.description }}</p>
+            </div>
+
+            <div class="t">
+                <span>{{ product.ram }}</span>
+            </div>
+
+        </div>
+        <div class="col-12 d-flex">
+            <div class="cart__buy ml-auto mb-2">
+              <a href="{% url 'add_cart' product.slug %}">
+                  <img src="{% static 'shop/img/products/it-cart.png' %}" alt="cart.png">
+              </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

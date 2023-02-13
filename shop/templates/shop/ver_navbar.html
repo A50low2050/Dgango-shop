@@ -1,0 +1,86 @@
+{% load static %}
+{% load thumbnail %}
+
+<section class="vertical__navbar">
+ <div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="vertical__categories">
+                    <p class="selected"><i class="fa fa-bars"></i><a href="{% url 'home'  %}">All Categories</a></p>
+                    <ul class="nav flex-column">
+                  {% for my_category in categories %}
+                    {% if my_category.pk == cat_selected %}
+                       <li class="nav-item d-flex align-items-center selected">
+                        <img src="{{ my_category.icon.url}}" alt="my_category.name">
+                        <a class="categories_link" href="{{ my_category.get_absolute_url }}">{{ my_category.name }}</a>
+                       </li>
+                    {% else %}
+                      <li class="nav-item d-flex align-items-center">
+                        <img src="{{ my_category.icon.url}}" alt="my_category.name">
+                        <a class="categories_link" href="{{ my_category.get_absolute_url }}">{{ my_category.name }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="wrapper__product">
+              {% if query %}
+                {% with products.count as total_results %}
+                   <div class="category">
+                        <span class="font-weight-bold">Found Result:</span> <span class="text-muted">{{ total_results }}</span>
+                   </div>
+                {% endwith %}
+
+              {% else %}
+                  {% if category.name %}
+                  <div class="category">
+                      <h5>{{ category.name }}</h5>
+                  </div>
+                  {% else %}
+                    <div class="category">
+                      <h5>All categories</h5>
+                    </div>
+                  {% endif %}
+              {% endif %}
+              <div class="row">
+                {% for content in products %}
+                  <div class="col-lg-4 mb-3">
+                    <div class="content__box d-flex flex-column border p-3">
+                      <div class="title__content d-flex justify-content-center">
+                          <a href="{{ content.get_absolute_url }}">{{ content.title }}</a>
+                      </div>
+                      <div class="img__content">
+                          <div class="wrapper__img">
+                            <a href="{{ content.get_absolute_url }}">
+                                {% thumbnail content.photo "250x250" as im %}
+                                    <img src="{{ content.photo.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                                {% endthumbnail %}
+                            </a>
+                          </div>
+                      </div>
+                      <div class="info__content d-flex flex-row align-items-center">
+                          <div class="price__content">
+                          <span>${{ content.price }}</span>
+                      </div>
+                  {% if content.old_price %}
+                    <div class="price__old">
+                      <span>${{ content.old_price }}</span>
+                    </div>
+                  {% endif %}
+                  <div class="cart__buy ml-auto">
+                      <a href="{% url 'add_cart' content.slug %}">
+                          <img src="{% static 'shop/img/products/it-cart.png' %}" alt="cart.png">
+                      </a>
+                  </div>
+                 </div>
+                </div>
+               </div>
+                {% endfor %}
+              </div>
+           </div>
+        </div>
+    </div>
+ </div>
+</section>

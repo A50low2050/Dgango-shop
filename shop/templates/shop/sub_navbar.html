@@ -1,0 +1,35 @@
+{% load static %}
+
+<section class="sub__navbar">
+    <div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-5 col-12 mb-4">
+            <div class="box-telephone d-flex justify-content-center">
+                <img src="{% static 'shop/img/bottom-bar/call.png' %}" alt="call">
+                <span class="call_us">Call Us</span>
+                <span class="telephone">+1 (111) 426 6573</span>
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-6 col-sm-5 col-10">
+            <div class="box-search">
+                 <form action="{% url 'home' %}" class="search-bar">
+                    <input type="text" name="search-bar" placeholder="I'm looking for...">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+         <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+            <div class="cart d-flex justify-content-center">
+                <a href="{% url 'cart' %}">
+                    <img src="{% static 'shop/img/bottom-bar/cart.png' %}" alt="cart">
+                    {% if cart %}
+                        <span>{{ cart.products.count }}</span>
+                    {% else %}
+                        <span>0</span>
+                    {% endif %}
+                </a>
+            </div>
+         </div>
+    </div>
+</div>
+</section>
