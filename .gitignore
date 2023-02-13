@@ -5,4 +5,4 @@
 *media
 *static
 *migrations
-*manage.py
+/shop/manage.py
